@@ -1,0 +1,16 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+h1 > a {
+  color: inherit;
+}
+
+.wrapper {
+  width: 960px;
+}
+
+section {
+	width: 650px;
+}
