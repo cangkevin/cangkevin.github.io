@@ -1,0 +1,26 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+h1 > a {
+  color: inherit;
+}
+
+h1 > a:hover {
+  color: #069;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #727272;
+  font-weight: normal;
+}
+
+.wrapper {
+  width: 960px;
+}
+
+section {
+  width: 650px;
+}
