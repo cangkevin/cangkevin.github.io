@@ -17,10 +17,6 @@ a:hover {
   font-weight: normal;
 }
 
-.wrapper {
-  width: 960px;
-}
-
-section {
-  width: 650px;
+span[id^="MathJax-Element"][style] {
+  font-size: 100% !important;
 }

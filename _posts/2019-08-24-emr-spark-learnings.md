@@ -7,7 +7,7 @@ tags: ['Spark', 'EMR', 'Optimization']
 ---
 For the past year, I had the opportunity to work on an enterprise-wide data ingestion platform. One core aspect of this platform was powered by Spark on YARN running on EMR clusters. Prior to working on this platform, I had zero knowledge on the aforementioned technologies.
 
-There was a period of time when the platform was costing hundreds of thousands of dollars per month, with the worst peak at just over $1 million. Despite my lack knowledge at the time, I knew that it was preposterous that such expenditures could be justified. I simply believed there is no way our platform should be costing this much.
+There was a period of time when the platform was costing hundreds of thousands of dollars per month, with the worst peak at just over $1 million. Despite my lack of knowledge at the time, I knew that it was preposterous that such expenditures could be justified. I simply believed there is no way our platform should be costing this much.
 Hence, I saw the opportunity for learning had presented itself which provoked me to jump straight into the rabbit hole of finding how to optimize this expensive platform.
 
 <!--preview-->
@@ -36,6 +36,7 @@ The above is directly applicable if you're using EMRs because AWS actually [popu
 ### Executor memory (`spark.executor.memory` and `spark.executor.memoryOverhead`)
 Once the number of executor cores has been chosen, executor memory can be computed by:
 \\[m_{e,optimal}=\frac{\mbox{yarn.nodemanager.resource.memory-mb}}{\bigg(\frac{\mbox{yarn.nodemanager.resource.cpu-vcores}}{\mbox{spark.executor.cores}}\bigg)}\\]
+
 In short, the amount of memory offered to YARN on a single instance divided by the theoretical max number of executors that can be allocated on a single instance, assuming each executor allocates `spark.executor.cores` each. The value of this calculation is optimal in terms of allocating the underlying instance's resources and reducing fragmentation on the memory side of things.
 
 One important thing to remember is that this optimal value is for the __entire__ YARN container allocation. Hence, it should be ensured that: \\[\mbox{spark.executor.memory} + \mbox{spark.executor.memoryOverhead} = m_{e,optimal}\\]
