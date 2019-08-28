@@ -17,6 +17,20 @@ a:hover {
   font-weight: normal;
 }
 
-span[id^="MathJax-Element"][style] {
-  font-size: 100% !important;
+@media print, screen and (max-width: 960px) {
+  [id^="MathJax-Element"][style*="text-align"] {
+    font-size: 100% !important;
+  }
+}
+
+@media print, screen and (max-width: 720px) {
+  [id^="MathJax-Element"][style*="text-align"] {
+    font-size: 90% !important;
+  }
+}
+
+@media print, screen and (max-width: 480px) {
+  [id^="MathJax-Element"][style*="text-align"] {
+    font-size: 85% !important;
+  }
 }
