@@ -35,11 +35,14 @@ A nice rule of thumb to keep in mind is to pick a number that evenly divides the
 The above is directly applicable if you're using EMRs because AWS actually [populates the configuration value `yarn.nodemanager.resource.cpu-vcores` to be the total number of CPU cores of the underlying EC2 instance](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-hadoop-task-config.html). In general, you should base your selection on what the actual value of `yarn.nodemanager.resource.cpu-vcores` is.
 ### Executor memory (`spark.executor.memory` and `spark.executor.memoryOverhead`)
 Once the number of executor cores has been chosen, executor memory can be computed by:
-\\[m_{e,optimal}=\frac{\mbox{yarn.nodemanager.resource.memory-mb}}{\bigg(\frac{\mbox{yarn.nodemanager.resource.cpu-vcores}}{\mbox{spark.executor.cores}}\bigg)}\\]
+
+\\[m_{e}=\frac{\mbox{yarn.nodemanager.resource.memory-mb}}{\bigg(\frac{\mbox{yarn.nodemanager.resource.cpu-vcores}}{\mbox{spark.executor.cores}}\bigg)}\\]
 
 In short, the amount of memory offered to YARN on a single instance divided by the theoretical max number of executors that can be allocated on a single instance, assuming each executor allocates `spark.executor.cores` each. The value of this calculation is optimal in terms of allocating the underlying instance's resources and reducing fragmentation on the memory side of things.
 
-One important thing to remember is that this optimal value is for the __entire__ YARN container allocation. Hence, it should be ensured that: \\[\mbox{spark.executor.memory} + \mbox{spark.executor.memoryOverhead} = m_{e,optimal}\\]
+One important thing to remember is that this optimal value is for the __entire__ YARN container allocation. Hence, it should be ensured that:
+
+\\[\mbox{spark.executor.memory} + \mbox{spark.executor.memoryOverhead} = m_{e}\\]
 
 ## Driver configuration
 Driver configuration will often depend on the what you are doing in your Spark application and whether you use a lot of driver intensive operations in your code. In the context of our situation, we did not engage in driver-intensive operations. Hence, we proceeded with deriving configurations in a similar manner as the executor configurations.
@@ -47,10 +50,12 @@ Driver configuration will often depend on the what you are doing in your Spark a
 In most cases, you should be able to get away allocating just 1 core for the driver. The driver itself shouldn't really participate in activity that requires a significant amount of cores. However as a reminder, __this is highly dependent on your application's use case__.
 ### Driver memory (`spark.driver.memory`)
 Following the same method as deriving executor memory, driver memory can be computed by:
-\\[m_{d,optimal}=\frac{\mbox{yarn.nodemanager.resource.memory-mb}}{\bigg(\frac{\mbox{yarn.nodemanager.resource.cpu-vcores}}{\mbox{spark.driver.cores}}\bigg)}\\]
 
-Once again, \\(m_{d,optimal}\\) is the optimal value for the __entire__ YARN container allocation for the driver. Hence, it should be ensured that:
-\\[\mbox{spark.driver.memory} + \mbox{spark.driver.memoryOverhead} = m_{d,optimal}\\]
+\\[m_{d}=\frac{\mbox{yarn.nodemanager.resource.memory-mb}}{\bigg(\frac{\mbox{yarn.nodemanager.resource.cpu-vcores}}{\mbox{spark.driver.cores}}\bigg)}\\]
+
+Once again, \\(m_{d}\\) is the optimal value for the __entire__ YARN container allocation for the driver. Hence, it should be ensured that:
+
+\\[\mbox{spark.driver.memory} + \mbox{spark.driver.memoryOverhead} = m_{d}\\]
 
 ## Benefit of executor and driver configurations
 Following the above executor and driver configurations, this provides a good compromise in having balanced executors that can process both small and large jobs and efficiently allocating cluster resources, ensuring that you're able to leverage every single core and GB of memory that you are paying for.
