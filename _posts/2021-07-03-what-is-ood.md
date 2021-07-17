@@ -58,7 +58,7 @@ We have both modules `A` and `B` and a function `f` in `B`. It's observed that b
 ![modules-example-flows-illustration](/assets/images/2021/Jul/modules-example-flows.jpg){:width="400px"}
 {: style="text-align: center;"}
 
-The important observation to takeaway from this is that the __compile-time dependency runs in the same direction as the flow of control__. This is a univeral trait: in order for one module to call another, it has to know about the other.
+The important observation to takeaway from this is that the __compile-time dependency runs in the same direction as the flow of control__. This is a universal trait: in order for one module to call another, it has to know about the other.
 
 Keeping mind these two observations, our function call tree can now be illustrated as:
 
